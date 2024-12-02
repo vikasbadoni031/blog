@@ -1,0 +1,334 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg: #faf8f1"
+  lang="en-us"
+  dir="ltr"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  
+  <title>Webserver and Kernel Interaction - Vikas Badoni</title>
+
+
+  
+  <meta name="theme-color" />
+
+  
+  
+  
+  
+  <meta name="description" content="In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?
+
+NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port.
+Once the data is inside, it is processed at other layers by kernel networking stack." />
+  <meta name="author" content="Personal Projects" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://vikasbadoni031.github.io/blog/main.min.css" />
+
+  
+  
+  
+  
+  
+  <link rel="preload" as="image" href="https://vikasbadoni031.github.io/blog/theme.png" />
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+  <script
+    defer
+    src="https://vikasbadoni031.github.io/blog/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+  
+  
+
+  
+  <link
+    rel="icon"
+    href="https://vikasbadoni031.github.io/blog/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://vikasbadoni031.github.io/blog/apple-touch-icon.png"
+  />
+
+  
+  <meta name="generator" content="Hugo 0.139.2">
+
+  
+  
+  
+  
+  
+  
+  <meta itemprop="name" content="Webserver and Kernel Interaction">
+  <meta itemprop="description" content="In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?
+NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port. Once the data is inside, it is processed at other layers by kernel networking stack.">
+  <meta itemprop="datePublished" content="2024-12-01T07:38:31+05:30">
+  <meta itemprop="dateModified" content="2024-12-01T07:38:31+05:30">
+  <meta itemprop="wordCount" content="449">
+  
+  <meta property="og:url" content="https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html">
+  <meta property="og:site_name" content="Vikas Badoni">
+  <meta property="og:title" content="Webserver and Kernel Interaction">
+  <meta property="og:description" content="In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?
+NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port. Once the data is inside, it is processed at other layers by kernel networking stack.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-01T07:38:31+05:30">
+    <meta property="article:modified_time" content="2024-12-01T07:38:31+05:30">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Webserver and Kernel Interaction">
+  <meta name="twitter:description" content="In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?
+NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port. Once the data is inside, it is processed at other layers by kernel networking stack.">
+
+  
+  
+
+  
+  <link rel="canonical" href="https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html" />
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[4.5rem] max-w-[--w] px-8 lg:justify-center">
+  <div class="relative z-50 ltr:mr-auto rtl:ml-auto flex items-center">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="https://vikasbadoni031.github.io/blog/"
+      >Vikas Badoni
+    </a>
+    
+  </div>
+
+  <div
+    class="btn-menu relative z-50 ltr:-mr-8 rtl:-ml-8 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-[--w] px-8 pb-16 pt-14 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-14">
+    <h1 class="!my-0 pb-2.5" style="color: #000000; font-weight: extra-bold;">Webserver and Kernel Interaction</h1>
+    
+    
+    <div class="text-xs antialiased opacity-60">
+      
+      <time>2024</time>
+      
+      
+      
+      
+    </div>
+    
+  </header>
+
+  <section style="font-family: 'Arvo', serif; line-height: 1.6; font-size: 1.125rem;"><p>In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?</p>
+<p><a href="../images/kernel-tcp.png"><img src="../images/kernel-tcp.png" alt="Sample Output"></a></p>
+<p>NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port.
+Once the data is inside, it is processed at other layers by kernel networking stack.</p>
+<p>Every webserver implemnets the accept() (2 in diagram) method which actively waits for an incoming connection and is a blocking system call.</p>
+<p>The accept method is implemented as an infinite loop, where each incoming connection is immediately assigned to a thread. This allows the next connection in the queue to be processed without delay.</p>
+<p>The method returns a socket once a connection is established. Socket is a unique combination of (client(IP+ Port) and server(IP + Port)). so its always unique for a particular client.
+Socket can also be called file desriptor. Which is then used by the system to read/write data specific to a particular client.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Kernel networking funtionality is provided by  kernel networking subsystem that creates a syn and accept queue.</p>
+<ul>
+<li>Syn queue is for connections which are still handshaking.
+<ul>
+<li>When the syn queue is full the incoming connections will be discarded at the kernel level. This typically happens under heavy load or during a denial-of-service (DoS) attack.</li>
+</ul>
+</li>
+<li>and accept queue is for the established connections.</li>
+</ul>
+<p>The websever process than picks a item from the accept queue and provides it to a thread to work on it.</p>
+<p>Thread pools are used for handling multiple connection rather than creating infinite no of threads. as it might overburden the system.</p>
+<ul>
+<li>In case of a thread pool, there is a set no of already created threads. connecions are then each assigned these threads.</li>
+</ul>
+<p>Kernel is responsible for delivering the packets received at the hardware interface to the respective processes based on the incoming port no. That is what port does, it helps identfy the process to deliever packets to.</p>
+<p>When a connection is started a syn msg in sent at the start of tcp connection.</p>
+<ul>
+<li>the connection is added to the syn queue.</li>
+<li><a href="../images/sy-1.png"><img src="../images/sy-1.png" alt="Sample Output"></a></li>
+<li>the kernel then sends a syn/ack and then receives an ack</li>
+<li>once the ack is received the item is moved from syn queue to accept queue.</li>
+<li><a href="../images/sy-2.png"><img src="../images/sy-2.png" alt="Sample Output"></a></li>
+<li>This accept queue is the one where the backend apps gets the connection/socket from and then start working on that.</li>
+</ul>
+<p>There are two types of sockets involved here:</p>
+<ul>
+<li>Listening socket: which is bound to ip address and port. eg a server listening on port.</li>
+<li>Client socket: This is created and returned by the accept method for a specific client.</li>
+</ul>
+<p>Thank You!</p>
+</section>
+
+  
+  
+
+  
+  
+  
+  
+  <nav
+    class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg !leading-[1.2] *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
+  >
+    
+    
+    <a class="ltr:ml-auto rtl:mr-auto justify-end pl-3" href="https://vikasbadoni031.github.io/blog/posts/kube-crd.html"
+      ><span style="font-family: 'Arvo', serif; font-size: 16px;">Kubernetes Operator to scale applications based on custom CRD</span><span class="ltr:ml-1.5 rtl:mr-1.5">→</span></a
+    >
+    
+  </nav>
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs uppercase tracking-wider opacity-60"
+>
+  
+
+</footer>
+
+  </body>
+</html>
