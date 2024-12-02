@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Vikas Badoni</title>
+    <link>https://vikasbadoni031.github.io/blog/posts.html</link>
+    <description>Recent content in Posts on Vikas Badoni</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Nov 2024 19:23:09 +0530</lastBuildDate>
+    <atom:link href="https://vikasbadoni031.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes Operator to scale applications based on custom CRD</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/kube-crd.html</link>
+      <pubDate>Fri, 29 Nov 2024 19:23:09 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/kube-crd.html</guid>
+      <description>&lt;p&gt;Kubernetes Operators allow you to extend the native functionality of Kubernetes by integrating custom logic into the control plane. You can codify application-specific operational knowledge directly into Kubernetes. Using Operarators you can automate application specific operational tasks.&lt;/p&gt;&#xA;&lt;p&gt;In this project we have created a custom operator from scratch using operator-sdk to create the boilerplate code, defining you own CRD&amp;rsquo;s and then providing the custom logic for reconciling the required objects in the cluster. This opearor allows you to scale up or down the no of replicas for a list of deployments based on the time and count in the inputs from crd.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TCP load Balancer using socket programming</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/tcp-lb.html</link>
+      <pubDate>Tue, 24 Sep 2024 19:23:12 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/tcp-lb.html</guid>
+      <description>&lt;p&gt;In this project we will be creating a load balancer and a group of backend servers using python socket programming. We will redirect/ load balance the request coming from client to load balancer to the different backend server choosen based on an algorithm.&lt;/p&gt;&#xA;&lt;p&gt;For both backend server and load balancer, we first start by initialising the socket. Then bind that socket to a ip address and port pair (This is where the process listens on).&#xA;We then finally start listening for the connection.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Golang CLI plugin to extend kubectl functionality</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/kubectl-plugin.html</link>
+      <pubDate>Wed, 29 Nov 2023 19:23:09 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/kubectl-plugin.html</guid>
+      <description>&lt;p&gt;Extending the functionality of kubectl by creating a custom plugin using the popular Go package, Cobra. Kubernetes offers extensive command-line tools, but sometimes you need additional commands tailored to your specific workflow. By using Go and Cobra, you can easily add your own commands to kubectl, helping with automating repetitive tasks.&lt;/p&gt;&#xA;&lt;p&gt;This application shows how to use the Cobra package, focusing on implementing a simple use case: retrieving deployments based on user input parameters. Based on the provided input, the app queries the cluster to find matching deployments and displays the requested memory and CPU. If no resource requests are set, it will display &amp;ldquo;None.&amp;rdquo; This functionality helps easily identify problematic deployments within the system. Additionally, the functionality is extensible to support other object types and custom requirements.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kubernetes interactions using client-go library</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/client-go.html</link>
+      <pubDate>Thu, 24 Aug 2023 19:23:15 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/client-go.html</guid>
+      <description>&lt;h3 id=&#34;sample-application-deployment-using-golang&#34;&gt;Sample application Deployment using Golang.&lt;/h3&gt;&#xA;&lt;p&gt;Creates nginx Deployment, Service, Ingress which is accessible on the localhost.&lt;/p&gt;&#xA;&lt;p&gt;we create a deployment by defining the deployment struct and then creating it using create method from the deployment interface.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deployment&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;appsv1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Deployment&lt;/span&gt;{&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;clientSet&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;AppsV1&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Deployments&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;namespace&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Create&lt;/span&gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We then wait for the replicas to come online. by first getting the deployment using get method and checking the status field for the readyrelplicas.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;checkForReadyReplicas&lt;/span&gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;currentReadyReplicas&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deployment&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadyReplicas&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;once the replicas are ready we then create the kubenetes service by defining a service struct and using create metod on the services interface.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
