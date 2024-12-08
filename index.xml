@@ -6,8 +6,15 @@
     <description>Recent content on Vikas Badoni</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Dec 2024 07:38:31 +0530</lastBuildDate>
+    <lastBuildDate>Sun, 08 Dec 2024 17:21:00 +0530</lastBuildDate>
     <atom:link href="https://vikasbadoni031.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shell using Linux System calls in C</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/shell.html</link>
+      <pubDate>Sun, 08 Dec 2024 17:21:00 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/shell.html</guid>
+      <description>&lt;p&gt;In this article we will be creating our own version of linux shell binary which provides the output based on the input commands provided.&lt;/p&gt;&#xA;&lt;p&gt;Essentially we will be using the &lt;strong&gt;fork()&lt;/strong&gt; system call to create a new process from the current shell which then execute the command passed. Once a new process is created &lt;strong&gt;execvp()&lt;/strong&gt; func is used for replacing the complete current process stack with thew new command which is passed.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Webserver and Kernel Interaction</title>
       <link>https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html</link>
