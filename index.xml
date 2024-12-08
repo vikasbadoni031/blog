@@ -6,15 +6,8 @@
     <description>Recent content on Vikas Badoni</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 08 Dec 2024 17:21:00 +0530</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2024 07:38:31 +0530</lastBuildDate>
     <atom:link href="https://vikasbadoni031.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Shell using Linux System calls in C</title>
-      <link>https://vikasbadoni031.github.io/blog/posts/shell.html</link>
-      <pubDate>Sun, 08 Dec 2024 17:21:00 +0530</pubDate>
-      <guid>https://vikasbadoni031.github.io/blog/posts/shell.html</guid>
-      <description>&lt;p&gt;In this article we will be creating our own version of linux shell binary which provides the output based on the input commands provided.&lt;/p&gt;&#xA;&lt;p&gt;Essentially we will be using the &lt;strong&gt;fork()&lt;/strong&gt; system call to create a new process from the current shell which then execute the command passed. Once a new process is created &lt;strong&gt;execvp()&lt;/strong&gt; func is used for replacing the complete current process stack with thew new command which is passed.&lt;/p&gt;</description>
-    </item>
     <item>
       <title>Webserver and Kernel Interaction</title>
       <link>https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html</link>
@@ -23,11 +16,25 @@
       <description>&lt;p&gt;In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;./images/kernel-tcp.png&#34;&gt;&lt;img src=&#34;./images/kernel-tcp.png&#34; alt=&#34;Sample Output&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port.&#xA;Once the data is inside, it is processed at other layers by kernel networking stack.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Understanding Containers ?</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/container.html</link>
+      <pubDate>Sat, 30 Nov 2024 08:38:31 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/container.html</guid>
+      <description>&lt;h3 id=&#34;what-is-a-container&#34;&gt;What is a container?&lt;/h3&gt;&#xA;&lt;p&gt;Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container&amp;rsquo;s application process running on the host machine.&lt;/p&gt;&#xA;&lt;p&gt;Now there are several issue with this approach.&lt;/p&gt;&#xA;&lt;p&gt;The &lt;strong&gt;first problem&lt;/strong&gt; here is the &lt;strong&gt;process isolation&lt;/strong&gt;. These are processes from different applications running on  the same machine.&lt;/p&gt;&#xA;&lt;p&gt;To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Kubernetes Operator to scale applications based on custom CRD</title>
       <link>https://vikasbadoni031.github.io/blog/posts/kube-crd.html</link>
       <pubDate>Fri, 29 Nov 2024 19:23:09 +0530</pubDate>
       <guid>https://vikasbadoni031.github.io/blog/posts/kube-crd.html</guid>
       <description>&lt;p&gt;Kubernetes Operators allow you to extend the native functionality of Kubernetes by integrating custom logic into the control plane. You can codify application-specific operational knowledge directly into Kubernetes. Using Operarators you can automate application specific operational tasks.&lt;/p&gt;&#xA;&lt;p&gt;In this project we have created a custom operator from scratch using operator-sdk to create the boilerplate code, defining you own CRD&amp;rsquo;s and then providing the custom logic for reconciling the required objects in the cluster. This opearor allows you to scale up or down the no of replicas for a list of deployments based on the time and count in the inputs from crd.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Shell using Linux System calls in C</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/shell.html</link>
+      <pubDate>Fri, 29 Nov 2024 07:38:31 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/shell.html</guid>
+      <description>&lt;p&gt;In this article we will be creating our own version of linux shell binary which provides the output based on the input commands provided.&lt;/p&gt;&#xA;&lt;p&gt;Essentially we will be using the &lt;strong&gt;fork()&lt;/strong&gt; system call to create a new process from the current shell which then execute the command passed. Once a new process is created &lt;strong&gt;execvp()&lt;/strong&gt; func is used for replacing the complete current process stack with thew new command which is passed.&lt;/p&gt;</description>
     </item>
     <item>
       <title>TCP load Balancer using socket programming</title>

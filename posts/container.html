@@ -1,0 +1,353 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg: #f8f5d7"
+  lang="en-us"
+  dir="ltr"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  
+  <title>Understanding Containers ? - Vikas Badoni</title>
+
+
+  
+  <meta name="theme-color" />
+
+  
+  
+  
+  
+  <meta name="description" content="What is a container?
+Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container&rsquo;s application process running on the host machine.
+Now there are several issue with this approach.
+The first problem here is the process isolation. These are processes from different applications running on  the same machine.
+To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process." />
+  <meta name="author" content="Personal Projects" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://vikasbadoni031.github.io/blog/main.min.css" />
+
+  
+  
+  
+  
+  
+  <link rel="preload" as="image" href="https://vikasbadoni031.github.io/blog/theme.png" />
+
+  
+  
+  
+  
+  
+
+  
+  
+  <link rel="preload" as="image" href="https://vikasbadoni031.github.io/blog/linkedin.svg" />
+  
+  
+
+  
+  
+  <script
+    defer
+    src="https://vikasbadoni031.github.io/blog/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+  
+  
+
+  
+  <link
+    rel="icon"
+    href="https://vikasbadoni031.github.io/blog/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://vikasbadoni031.github.io/blog/apple-touch-icon.png"
+  />
+
+  
+  <meta name="generator" content="Hugo 0.139.2">
+
+  
+  
+  
+  
+  
+  
+  <meta itemprop="name" content="Understanding Containers ?">
+  <meta itemprop="description" content="What is a container? Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container’s application process running on the host machine.
+Now there are several issue with this approach.
+The first problem here is the process isolation. These are processes from different applications running on the same machine.
+To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process.">
+  <meta itemprop="datePublished" content="2024-11-30T08:38:31+05:30">
+  <meta itemprop="dateModified" content="2024-11-30T08:38:31+05:30">
+  <meta itemprop="wordCount" content="457">
+  
+  <meta property="og:url" content="https://vikasbadoni031.github.io/blog/posts/container.html">
+  <meta property="og:site_name" content="Vikas Badoni">
+  <meta property="og:title" content="Understanding Containers ?">
+  <meta property="og:description" content="What is a container? Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container’s application process running on the host machine.
+Now there are several issue with this approach.
+The first problem here is the process isolation. These are processes from different applications running on the same machine.
+To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-30T08:38:31+05:30">
+    <meta property="article:modified_time" content="2024-11-30T08:38:31+05:30">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Understanding Containers ?">
+  <meta name="twitter:description" content="What is a container? Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container’s application process running on the host machine.
+Now there are several issue with this approach.
+The first problem here is the process isolation. These are processes from different applications running on the same machine.
+To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process.">
+
+  
+  
+
+  
+  <link rel="canonical" href="https://vikasbadoni031.github.io/blog/posts/container.html" />
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[4.5rem] max-w-[--w] px-8 lg:justify-center">
+  <div class="relative z-50 ltr:mr-auto rtl:ml-auto flex items-center">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="https://vikasbadoni031.github.io/blog/"
+      >Vikas Badoni
+    </a>
+    
+  </div>
+
+  <div
+    class="btn-menu relative z-50 ltr:-mr-8 rtl:-ml-8 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#f8f5d7'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 rtl:space-x-reverse dark:invert ltr:lg:ml-14 rtl:lg:mr-14 lg:mt-0 lg:items-center"
+    >
+      
+      <a
+        class="h-7 w-7 text-[0] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/vikas-badoni"
+        target="_blank"
+        rel="me"
+      >
+        linkedin
+      </a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-[--w] px-8 pb-16 pt-14 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-14">
+    <h1 class="!my-0 pb-2.5" style="color: #000000; font-weight: extra-bold;">Understanding Containers ?</h1>
+    
+    
+    <div class="text-xs antialiased opacity-60">
+      
+      <time>2024</time>
+      
+      
+      
+      
+    </div>
+    
+  </header>
+
+  <section style="font-family: 'Arvo', serif; line-height: 1.6; font-size: 1.125rem;"><h3 id="what-is-a-container">What is a container?</h3>
+<p>Its simply a process running on the host machine. When u search for the processes in the host machine you will find the container&rsquo;s application process running on the host machine.</p>
+<p>Now there are several issue with this approach.</p>
+<p>The <strong>first problem</strong> here is the <strong>process isolation</strong>. These are processes from different applications running on  the same machine.</p>
+<p>To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process.</p>
+<p>This is the precise reason for not running pod as a root user and provide a different userid in the securitContext. Otherwise the process will have root access on the host system.</p>
+<p>An example of such an implementation is pod. Where 2 containers in a same pod share the network ns so they can connect over localhost but they don&rsquo;t share the process namespace so the process running on each one of them might be processID=1.</p>
+<p>To see all the namespaces allocated to a process use the below commands</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">/</span><span style="color:#a6e22e">proc</span><span style="color:#f92672">/</span><span style="color:#a6e22e">pid</span><span style="color:#f92672">/</span><span style="color:#a6e22e">ns</span> 
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">OR</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">lsns</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> &lt;<span style="color:#a6e22e">pid</span>&gt;
+</span></span></code></pre></div><p><a href="../images/ns.png"><img src="../images/ns.png" alt="Sample Output"></a></p>
+<p>The <strong>second problem</strong> is these different process/containers should not have the <strong>complete view/access of the host file system</strong>.</p>
+<p>This can be controlled using linux chroot.</p>
+<p>In the below command we have given the /bin/bash command access to only specific dir. So the process bash wont be able to see anything beyond that.</p>
+<p>Simlarly container&rsquo;s process access is limited to the filesystem that comes with it. Only explicit mounting of host dir using volumes can provide access to the host filesystem.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">chroot</span> .<span style="color:#f92672">/</span><span style="color:#a6e22e">home</span><span style="color:#f92672">/</span><span style="color:#a6e22e">myname</span><span style="color:#f92672">/</span><span style="color:#a6e22e">rootfs</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">bin</span><span style="color:#f92672">/</span><span style="color:#a6e22e">bash</span>
+</span></span></code></pre></div><p><strong>Third</strong> issue is what if one of the process <strong>consumes all of the CPU/ RAM</strong> and affect other process on the same host.
+Control groups helps here, they are a Linux mechanism to control the access to the shared resources in a linux system. There are Cgroups for all different type of resource and they are available inside <strong>/sys/fs/cgroups</strong>.</p>
+<p>Whenever a new process is created, it is assigned a value for eg for CPU and memory. If the process consumes more that it the process will be throttled or otherwise OOM killed.</p>
+<p><a href="../images/cgroups.png"><img src="../images/cgroups.png" alt="Cgroups"></a></p>
+<h3 id="connecting-to-a-container-process">Connecting to a container process</h3>
+<p>You can use the nsenter command to enter the same namespace as the application/container process. When using containerd as container runtime you can use the below set of comamnd to connect.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">list</span> | <span style="color:#a6e22e">grep</span> <span style="color:#a6e22e">appname</span>   <span style="color:#75715e">//Get container id out of it
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">info</span> &lt;<span style="color:#a6e22e">container</span><span style="color:#f92672">-</span><span style="color:#a6e22e">id</span>&gt; | <span style="color:#a6e22e">grep</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">C4</span> <span style="color:#a6e22e">pid</span>   <span style="color:#75715e">// Get the process pid from here
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">lsns</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> &lt;<span style="color:#a6e22e">pid</span>&gt;  <span style="color:#75715e">// get the other pid, not the pause one
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">nsenter</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">target</span> &lt;<span style="color:#a6e22e">other</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pid</span>&gt; <span style="color:#f92672">--</span><span style="color:#a6e22e">mount</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">uts</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">net</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">pid</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">bin</span><span style="color:#f92672">/</span><span style="color:#a6e22e">bash</span>
+</span></span></code></pre></div></section>
+
+  
+  
+
+  
+  
+  
+  
+  <nav
+    class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg !leading-[1.2] *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
+  >
+    
+    <a class="ltr:pr-3 rtl:pl-3" href="https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html"
+      ><span class="ltr:mr-1.5 rtl:ml-1.5">←</span><span style="font-family: 'Arvo', serif; font-size: 16px;">Webserver and Kernel Interaction</span></a
+    >
+    
+    
+    <a class="ltr:ml-auto rtl:mr-auto justify-end pl-3" href="https://vikasbadoni031.github.io/blog/posts/kube-crd.html"
+      ><span style="font-family: 'Arvo', serif; font-size: 16px;">Kubernetes Operator to scale applications based on custom CRD</span><span class="ltr:ml-1.5 rtl:mr-1.5">→</span></a
+    >
+    
+  </nav>
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs uppercase tracking-wider opacity-60"
+>
+  
+
+</footer>
+
+  </body>
+</html>
