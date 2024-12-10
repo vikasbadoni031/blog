@@ -1,0 +1,336 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg: #f8f5d7"
+  lang="en-us"
+  dir="ltr"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  
+  <title>Kubernetes Service Networking using IPtables - Vikas Badoni</title>
+
+
+  
+  <meta name="theme-color" />
+
+  
+  
+  
+  
+  <meta name="description" content="How Kubenetes services like ClusterIP or NodePort work behind the scenes.
+Kube-Proxy is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.
+Behind the scene the kube-proxy works with the kernel&rsquo;s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip." />
+  <meta name="author" content="Personal Projects" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://vikasbadoni031.github.io/blog/main.min.css" />
+
+  
+  
+  
+  
+  
+  <link rel="preload" as="image" href="https://vikasbadoni031.github.io/blog/theme.png" />
+
+  
+  
+  
+  
+  
+
+  
+  
+  <link rel="preload" as="image" href="https://vikasbadoni031.github.io/blog/linkedin.svg" />
+  
+  
+
+  
+  
+  <script
+    defer
+    src="https://vikasbadoni031.github.io/blog/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+  
+
+  
+  
+  
+
+  
+  <link
+    rel="icon"
+    href="https://vikasbadoni031.github.io/blog/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://vikasbadoni031.github.io/blog/apple-touch-icon.png"
+  />
+
+  
+  <meta name="generator" content="Hugo 0.139.2">
+
+  
+  
+  
+  
+  
+  
+  <meta itemprop="name" content="Kubernetes Service Networking using IPtables">
+  <meta itemprop="description" content="How Kubenetes services like ClusterIP or NodePort work behind the scenes.
+Kube-Proxy is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.
+Behind the scene the kube-proxy works with the kernel’s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip.">
+  <meta itemprop="datePublished" content="2024-12-10T11:41:47+05:30">
+  <meta itemprop="dateModified" content="2024-12-10T11:41:47+05:30">
+  <meta itemprop="wordCount" content="322">
+  
+  <meta property="og:url" content="https://vikasbadoni031.github.io/blog/posts/kube-service-networking.html">
+  <meta property="og:site_name" content="Vikas Badoni">
+  <meta property="og:title" content="Kubernetes Service Networking using IPtables">
+  <meta property="og:description" content="How Kubenetes services like ClusterIP or NodePort work behind the scenes.
+Kube-Proxy is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.
+Behind the scene the kube-proxy works with the kernel’s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-10T11:41:47+05:30">
+    <meta property="article:modified_time" content="2024-12-10T11:41:47+05:30">
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kubernetes Service Networking using IPtables">
+  <meta name="twitter:description" content="How Kubenetes services like ClusterIP or NodePort work behind the scenes.
+Kube-Proxy is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.
+Behind the scene the kube-proxy works with the kernel’s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip.">
+
+  
+  
+
+  
+  <link rel="canonical" href="https://vikasbadoni031.github.io/blog/posts/kube-service-networking.html" />
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[4.5rem] max-w-[--w] px-8 lg:justify-center">
+  <div class="relative z-50 ltr:mr-auto rtl:ml-auto flex items-center">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="https://vikasbadoni031.github.io/blog/"
+      >Vikas Badoni
+    </a>
+    
+  </div>
+
+  <div
+    class="btn-menu relative z-50 ltr:-mr-8 rtl:-ml-8 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#f8f5d7'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 rtl:space-x-reverse dark:invert ltr:lg:ml-14 rtl:lg:mr-14 lg:mt-0 lg:items-center"
+    >
+      
+      <a
+        class="h-7 w-7 text-[0] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/vikas-badoni"
+        target="_blank"
+        rel="me"
+      >
+        linkedin
+      </a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-[--w] px-8 pb-16 pt-14 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-14">
+    <h1 class="!my-0 pb-2.5" style="color: #000000; font-weight: extra-bold;">Kubernetes Service Networking using IPtables</h1>
+    
+    
+    <div class="text-xs antialiased opacity-60">
+      
+      <time>2024</time>
+      
+      
+      
+      
+    </div>
+    
+  </header>
+
+  <section style="font-family: 'Arvo', serif; line-height: 1.6; font-size: 1.125rem;"><p>How Kubenetes services like ClusterIP or NodePort work behind the scenes.</p>
+<p><strong>Kube-Proxy</strong> is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.</p>
+<p>Behind the scene the kube-proxy works with the kernel&rsquo;s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip.</p>
+<p>Kube proxy listens to the api server continously and if there are any changes to the pods(ips) or if there is a new service it will make those changes to the iptable rules on each of the nodes in the cluster.</p>
+<p>In the below figure we have 2 services deployed in our cluster. <strong>nginx-service</strong> is a <strong>clusterIP</strong> service and <strong>service1</strong> is a <strong>NodePort</strong> type of service and they have the respective pod ip listed in the endpoints output.</p>
+<p><a href="../images/ksn-1.png"><img src="../images/ksn-1.png" alt="Sample Output"></a></p>
+<p>Lets look below at the iptable rules for the clusterIP service. For this you will have to login to any of the nodes in the cluster and run the below commands. Open the below diagram by clicking in a separate tab for full view.</p>
+<p><a href="../images/cluster-ip.png"><img src="../images/cluster-ip.png" alt="Sample Output"></a></p>
+<p>We can check the prerouting iptables chain using</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">iptables</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">t</span> <span style="color:#a6e22e">nat</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">L</span> <span style="color:#a6e22e">PREROUTING</span>
+</span></span></code></pre></div><p>Which shows us the KUBE-SERVICES chain, point <strong>(1)</strong> from the diagram. Lets describe that</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">iptables</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">t</span> <span style="color:#a6e22e">nat</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">L</span> <span style="color:#a6e22e">KUBE</span><span style="color:#f92672">-</span><span style="color:#a6e22e">SERVICES</span>
+</span></span></code></pre></div><p>Now you can see the service specific chains. for our nginx-service we have one at <strong>(4)</strong>.</p>
+<p>Lets describe that.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">iptables</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">t</span> <span style="color:#a6e22e">nat</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">L</span> <span style="color:#a6e22e">KUBE</span><span style="color:#f92672">-</span><span style="color:#a6e22e">SVC</span><span style="color:#f92672">-</span><span style="color:#a6e22e">V2OKYYMBY3REGZOG</span>
+</span></span></code></pre></div><p>Now you can see the pod specific ips <strong>10.244.1.4:80</strong> and <strong>10.244.1.6:80</strong> as a output, which matches with our service enpoints from the first image. So all the traffic destined for the service would be forwarded to either of these 2 ips. <strong>(6)</strong></p>
+<p>Similarly you can check these rule for NodePort service as well.</p>
+<p><a href="../images/nodeport-service.png"><img src="../images/nodeport-service.png" alt="Sample Output"></a></p>
+<p>Thank You!</p>
+</section>
+
+  
+  
+
+  
+  
+  
+  
+  <nav
+    class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg !leading-[1.2] *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
+  >
+    
+    
+    <a class="ltr:ml-auto rtl:mr-auto justify-end pl-3" href="https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html"
+      ><span style="font-family: 'Arvo', serif; font-size: 16px;">Webserver and Kernel Interaction</span><span class="ltr:ml-1.5 rtl:mr-1.5">→</span></a
+    >
+    
+  </nav>
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs uppercase tracking-wider opacity-60"
+>
+  
+
+</footer>
+
+  </body>
+</html>

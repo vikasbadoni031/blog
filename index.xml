@@ -6,8 +6,15 @@
     <description>Recent content on Vikas Badoni</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Dec 2024 07:38:31 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 10 Dec 2024 11:41:47 +0530</lastBuildDate>
     <atom:link href="https://vikasbadoni031.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes Service Networking using IPtables</title>
+      <link>https://vikasbadoni031.github.io/blog/posts/kube-service-networking.html</link>
+      <pubDate>Tue, 10 Dec 2024 11:41:47 +0530</pubDate>
+      <guid>https://vikasbadoni031.github.io/blog/posts/kube-service-networking.html</guid>
+      <description>&lt;p&gt;How Kubenetes services like ClusterIP or NodePort work behind the scenes.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Kube-Proxy&lt;/strong&gt; is the component responsible for setting up all the networking for your service. It runs as a daemon set on each node and configures the routing rules for kubernetes services.&lt;/p&gt;&#xA;&lt;p&gt;Behind the scene the kube-proxy works with the kernel&amp;rsquo;s iptable rules (If the proxy is running in iptable mode) and modifies the prerouting chain. Any ip packet that enters the kernel stack first goes through this chain where the service ip is resolved to the pod ip.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Webserver and Kernel Interaction</title>
       <link>https://vikasbadoni031.github.io/blog/posts/kernel-tcp.html</link>
@@ -16,7 +23,7 @@
       <description>&lt;p&gt;In this blog we see how a webserver or any other such process picks up connection from the kernel and serves it?&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;./images/kernel-tcp.png&#34;&gt;&lt;img src=&#34;./images/kernel-tcp.png&#34; alt=&#34;Sample Output&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;NIC card is where the connection is received and convertion happens from physical layer (Electricity etc) to data link layer (Binary digital) signals. This can be a ethernet port or a wifi port.&#xA;Once the data is inside, it is processed at other layers by kernel networking stack.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Understanding Containers ?</title>
+      <title>Containers Demystified !!</title>
       <link>https://vikasbadoni031.github.io/blog/posts/container.html</link>
       <pubDate>Sat, 30 Nov 2024 08:38:31 +0530</pubDate>
       <guid>https://vikasbadoni031.github.io/blog/posts/container.html</guid>
