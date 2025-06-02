@@ -62,6 +62,7 @@
   <title>Containers Demystified !! - Vikas Badoni</title>
 
 
+
   
   <meta name="theme-color" />
 
@@ -74,7 +75,7 @@ Its simply a process running on the host machine. When u search for the processe
 Now there are several issue with this approach.
 The first problem here is the process isolation. These are processes from different applications running on  the same machine.
 To provide isolation at the resource level these process are assigned namespaced slice of the different resources required. Linux namespaces are a way for the system to assign separate resources for network, userspace, pid space etc to a process." />
-  <meta name="author" content="Personal Projects" />
+  <meta name="author" content="Personal Projects " />
   
 
   
@@ -128,7 +129,7 @@ To provide isolation at the resource level these process are assigned namespaced
   />
 
   
-  <meta name="generator" content="Hugo 0.139.2">
+  <meta name="generator" content="Hugo 0.147.7">
 
   
   
@@ -241,7 +242,6 @@ To provide isolation at the resource level these process are assigned namespaced
   >
     
     
-
     
     <nav
       class="mt-12 flex justify-center space-x-10 rtl:space-x-reverse dark:invert ltr:lg:ml-14 rtl:lg:mr-14 lg:mt-0 lg:items-center"
@@ -307,10 +307,10 @@ Control groups helps here, they are a Linux mechanism to control the access to t
 <p><a href="../images/cgroups.png"><img src="../images/cgroups.png" alt="Cgroups"></a></p>
 <h3 id="connecting-to-a-container-process">Connecting to a container process</h3>
 <p>You can use the nsenter command to enter the same namespace as the application/container process. When using containerd as container runtime you can use the below set of comamnd to connect.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">list</span> | <span style="color:#a6e22e">grep</span> <span style="color:#a6e22e">appname</span>   <span style="color:#75715e">//Get container id out of it
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">info</span> &lt;<span style="color:#a6e22e">container</span><span style="color:#f92672">-</span><span style="color:#a6e22e">id</span>&gt; | <span style="color:#a6e22e">grep</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">C4</span> <span style="color:#a6e22e">pid</span>   <span style="color:#75715e">// Get the process pid from here
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">lsns</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> &lt;<span style="color:#a6e22e">pid</span>&gt;  <span style="color:#75715e">// get the other pid, not the pause one
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">nsenter</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">target</span> &lt;<span style="color:#a6e22e">other</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pid</span>&gt; <span style="color:#f92672">--</span><span style="color:#a6e22e">mount</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">uts</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">net</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">pid</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">bin</span><span style="color:#f92672">/</span><span style="color:#a6e22e">bash</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">list</span> | <span style="color:#a6e22e">grep</span> <span style="color:#a6e22e">appname</span>   <span style="color:#75715e">//Get container id out of it</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ctr</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">namespace</span> <span style="color:#a6e22e">k8s</span>.<span style="color:#a6e22e">io</span> <span style="color:#a6e22e">containers</span> <span style="color:#a6e22e">info</span> &lt;<span style="color:#a6e22e">container</span><span style="color:#f92672">-</span><span style="color:#a6e22e">id</span>&gt; | <span style="color:#a6e22e">grep</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">C4</span> <span style="color:#a6e22e">pid</span>   <span style="color:#75715e">// Get the process pid from here</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">lsns</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">p</span> &lt;<span style="color:#a6e22e">pid</span>&gt;  <span style="color:#75715e">// get the other pid, not the pause one</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">nsenter</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">target</span> &lt;<span style="color:#a6e22e">other</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pid</span>&gt; <span style="color:#f92672">--</span><span style="color:#a6e22e">mount</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">uts</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">net</span> <span style="color:#f92672">--</span><span style="color:#a6e22e">pid</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">bin</span><span style="color:#f92672">/</span><span style="color:#a6e22e">bash</span>
 </span></span></code></pre></div></section>
 
   
@@ -353,9 +353,14 @@ Control groups helps here, they are a Linux mechanism to control the access to t
     </main>
 
     <footer
-  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs uppercase tracking-wider opacity-60"
+  class="mx-auto flex h-[4.5rem] max-w-[--w] items-center px-8 text-xs tracking-wider opacity-60"
 >
+  <div class="mr-auto">
   
+  <b>viki.badoni031@gmail.com</b><br>
+  <b>+91 7777050902</b>
+  
+  </div>
 
 </footer>
 
